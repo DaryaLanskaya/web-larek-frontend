@@ -7,11 +7,6 @@
 <a href="https://www.typescriptlang.org/"><img height="32" width="32" src="https://cdn.simpleicons.org/typescript" /></a>
 <a href="https://webpack.js.org/"><img height="32" width="32" src="https://cdn.simpleicons.org/webpack" /></a>
 
-### Скриншоты
-
-![](./screenshot-01.png)  
-![](./screenshot-02.png)
-
 ## Структура проекта
 
 - src/ — исходные файлы проекта
@@ -59,6 +54,11 @@ yarn build
 
 "Веб-ларек" — это интернет-магазин.  
 Его ключевые компоненты включают главную страницу со списком товаров и иконкой корзины, а также различные модальные окна, которые позволяют пользователям просматривать детали товаров и оформлять заказы.
+
+### Скриншоты
+
+![](./screenshot-01.png)  
+![](./screenshot-02.png)
 
 ## Макет проекта
 
