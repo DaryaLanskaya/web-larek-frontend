@@ -14,6 +14,18 @@ export interface IProducts {
 	items: IProduct[];
 }
 
+//Интерфейс для отображения контента с карточкой товара.
+export interface IProductContent {
+	template: HTMLTemplateElement;
+	render(product: IProduct): HTMLElement;
+}
+
+//Интерфейс для отображения страницы
+export interface IPage {
+	counter: number;
+	catalog: HTMLElement[];
+}
+
 //Интерфейс для вывода карточек на страницу
 export interface ICard {
 	render(data: IProduct): HTMLElement;
@@ -65,6 +77,20 @@ export enum PaymentType {
 export interface IOrderResult {
 	id: string;
 	total: number;
+}
+
+// Интерфейс реализует контент оформления заказа
+export interface IOrderContent {
+	valid: boolean;
+	template: HTMLTemplateElement;
+	render(): HTMLElement;
+}
+
+// Интерфейс реализует контент контактов
+export interface IContactsContent {
+	valid: boolean;
+	template: HTMLTemplateElement;
+	render(): HTMLElement;
 }
 
 // Формы
