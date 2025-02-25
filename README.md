@@ -7,6 +7,13 @@
 <a href="https://www.typescriptlang.org/"><img height="32" width="32" src="https://cdn.simpleicons.org/typescript" /></a>
 <a href="https://webpack.js.org/"><img height="32" width="32" src="https://cdn.simpleicons.org/webpack" /></a>
 
+### Скриншоты
+
+![](./screenshot-01.png)  
+![](./screenshot-02.png)  
+![](./screenshot-03.png)  
+![](./screenshot-04.png)
+
 ## Структура проекта
 
 - src/ — исходные файлы проекта
