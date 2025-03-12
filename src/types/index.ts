@@ -1,3 +1,8 @@
+// Интерфейс клика мышки на элемент
+export interface IActions {
+	onClick: (event: MouseEvent) => void;
+}
+
 // Интерфейс товара
 export interface IProduct {
 	id: string;
@@ -22,8 +27,9 @@ export interface IProductContent {
 
 //Интерфейс для отображения страницы
 export interface IPage {
-	counter: number;
-	catalog: HTMLElement[];
+	counter: number; // меняет содержимое счетчика на полученное.
+	catalog: HTMLElement[]; // меняет содержмое каталога на полученные элементы.
+	locked: boolean; // меняет класс обертки на значение, соответствующее переданному.
 }
 
 //Интерфейс для вывода карточек на страницу
@@ -115,4 +121,15 @@ export interface IOrderModel {
 export interface IModalWork {
 	openModal: (element: HTMLElement) => void;
 	closeModal: () => void;
+}
+
+export interface IAppState {
+	catalog: IProduct[];
+}
+
+// Интерфейс для продуктов
+export interface IProductModel {
+	products: IProduct[];
+	selected: IProduct;
+	setPreview(item: IProduct): void;
 }
