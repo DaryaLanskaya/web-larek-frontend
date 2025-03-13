@@ -1,8 +1,5 @@
-import { ICard, IProduct, IActions } from '../types';
-import { Component } from './base/Component';
-import { settings } from '../utils/constants';
-import { ensureElement } from '../utils/utils';
-import { IEvents } from './base/events';
+import { ICard, IProduct, IActions } from '../../types';
+import { IEvents } from '../base/events';
 
 export class Card implements ICard {
 	protected _element: HTMLElement; // шаблон карточки

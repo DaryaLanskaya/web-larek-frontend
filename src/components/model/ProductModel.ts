@@ -19,7 +19,7 @@ export class ProductModel implements IProductModel {
 		return this._products;
 	}
 
-	setPreview(item: IProduct) {
+	setDetail(item: IProduct) {
 		this.selected = item;
 		this.events.emit('modalCard:open', item);
 	}

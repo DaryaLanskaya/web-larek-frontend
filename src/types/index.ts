@@ -34,7 +34,16 @@ export interface IPage {
 
 //Интерфейс для вывода карточек на страницу
 export interface ICard {
+	// text: HTMLElement;
+	// button: HTMLElement;
 	render(data: IProduct): HTMLElement;
+}
+
+export interface ICardDetail {
+	text: HTMLElement;
+	button: HTMLButtonElement;
+	render(data: IProduct): HTMLElement;
+	setButtonState(message: string): void;
 }
 
 // Интерфейс ошибки сервера
@@ -119,8 +128,11 @@ export interface IOrderModel {
 
 // Интерфейс для работы модальных окон
 export interface IModalWork {
-	openModal: (element: HTMLElement) => void;
-	closeModal: () => void;
+	// openModal: (element: HTMLElement) => void;
+	// closeModal: () => void;
+	open(): void;
+	close(): void;
+	render(): HTMLElement;
 }
 
 export interface IAppState {
@@ -131,5 +143,5 @@ export interface IAppState {
 export interface IProductModel {
 	products: IProduct[];
 	selected: IProduct;
-	setPreview(item: IProduct): void;
+	setDetail(item: IProduct): void;
 }
