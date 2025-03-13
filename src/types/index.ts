@@ -52,18 +52,42 @@ export interface IErrorMessage {
 }
 
 // Интерфейс корзины для товаров
+// export interface IBasketModel {
+// 	add(item: Partial<IProduct>): void;
+// 	remove(item: Partial<IProduct>): void;
+// 	clear(): void;
+// 	total: number;
+// }
+
+// Интерфейс для представления корзины
+export interface IBasket {
+	counter(count: number): void; // Рендерит количество товаров в корзине
+	totalPrice(total: number): void; // Рендерит общую стоимость товаров
+	updateItems(items: HTMLElement[]): void; // Обновляет список товаров в корзине
+	render(): HTMLElement; // Рендерит корзину
+}
+
+// Интерфейс для модели корзины
 export interface IBasketModel {
-	add(item: Partial<IProduct>): void;
-	remove(item: Partial<IProduct>): void;
-	clear(): void;
-	total: number;
+	basketProducts: IProduct[]; // Список товаров в корзине
+	setSelectedCard(item: IProduct): void; // Добавить товар в корзину
+	deleteCardToBasket(item: IProduct): void; // Удалить товар из корзины
+	clearBasketProducts(): void; // Очистить всю корзину
+	getCounter(): number; // Получить количество товаров в корзине
+	getTotalPrice(): number; // Получить общую стоимость всех товаров в корзине
+	getProductIds(): string[]; // Получить идентификаторы всех товаров в корзине
+}
+
+// Интерфейс для элемента корзины
+export interface IBasketItem {
+	render(data: IProduct, index: number): HTMLElement; // Метод для рендеринга элемента корзины
 }
 
 // Интерфейс данных корзины для товаров
-export interface IBasketContent {
-	template: HTMLTemplateElement;
-	render(): HTMLElement;
-}
+// export interface IBasketContent {
+// 	template: HTMLTemplateElement;
+// 	render(): HTMLElement;
+// }
 
 // Интерфейс eventEmitter - обеспечивает работу событий(слушатель событий)
 export interface IEventEmitter {

@@ -11,6 +11,22 @@ import { ProductModel } from './components/model/ProductModel';
 import { Card } from './components/view/Card';
 import { Modal } from './components/view/Modal';
 import { CardDetail } from './components/view/CardDetail';
+import { Basket } from './components/view/Basket';
+import { BasketModel } from './components/model/BasketModel';
+import { BasketItem } from './components/view/BasketItem';
+
+const cardCatalogTemplate = document.querySelector(
+	'#card-catalog'
+) as HTMLTemplateElement;
+
+const basketTemplate = document.querySelector('#basket') as HTMLTemplateElement;
+const cardBasketTemplate = document.querySelector(
+	'#card-basket'
+) as HTMLTemplateElement;
+
+const cardDetailTemplate = document.querySelector(
+	'#card-preview'
+) as HTMLTemplateElement;
 
 const events = new EventEmitter();
 const api = new LarekAPI(CDN_URL, API_URL);
@@ -18,18 +34,13 @@ const appData = new AppState({}, events);
 const page = new Page(document.body, events);
 const productModel = new ProductModel(events);
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
-const cardDetailTemplate = document.querySelector(
-	'#card-preview'
-) as HTMLTemplateElement;
+const basket = new Basket(basketTemplate, events);
+const basketModel = new BasketModel();
 
 // Чтобы мониторить все события, для отладки
 events.onAll(({ eventName, data }) => {
 	console.log(eventName, data);
 });
-
-const cardCatalogTemplate = document.querySelector(
-	'#card-catalog'
-) as HTMLTemplateElement;
 
 api
 	.getProductList()
@@ -67,4 +78,33 @@ events.on('modal:open', () => {
 
 events.on('modal:close', () => {
 	modal.locked = false;
+});
+
+events.on('basket:change', () => {
+	basket.totalPrice(basketModel.getTotalPrice());
+	const changedItems = basketModel.basketProducts.map((item, index) => {
+		const basketItem = new BasketItem(cardBasketTemplate, {
+			onClick: () => events.emit('basket:basketItemRemove', item),
+		});
+		return basketItem.render(item, index + 1);
+	});
+	basket.updateItems(changedItems);
+});
+
+events.on('card:addToCart', () => {
+	basketModel.setSelectedCard(productModel.selected);
+	basket.counter(basketModel.getCounter());
+	events.emit('basket:change');
+	modal.close();
+});
+
+events.on('basket:open', () => {
+	modal.content = basket.render();
+	modal.render();
+});
+
+events.on('basket:basketItemRemove', (item: IProduct) => {
+	basketModel.deleteCardToBasket(item);
+	basket.counter(basketModel.getCounter());
+	events.emit('basket:change');
 });
