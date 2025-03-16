@@ -34,11 +34,10 @@ export interface IPage {
 
 //Интерфейс для вывода карточек на страницу
 export interface ICard {
-	// text: HTMLElement;
-	// button: HTMLElement;
 	render(data: IProduct): HTMLElement;
 }
 
+//Интерфейс для вывода детальной карточки на страницу
 export interface ICardDetail {
 	text: HTMLElement;
 	button: HTMLButtonElement;
@@ -50,14 +49,6 @@ export interface ICardDetail {
 export interface IErrorMessage {
 	error: string;
 }
-
-// Интерфейс корзины для товаров
-// export interface IBasketModel {
-// 	add(item: Partial<IProduct>): void;
-// 	remove(item: Partial<IProduct>): void;
-// 	clear(): void;
-// 	total: number;
-// }
 
 // Интерфейс для представления корзины
 export interface IBasket {
@@ -83,12 +74,6 @@ export interface IBasketItem {
 	render(data: IProduct, index: number): HTMLElement; // Метод для рендеринга элемента корзины
 }
 
-// Интерфейс данных корзины для товаров
-// export interface IBasketContent {
-// 	template: HTMLTemplateElement;
-// 	render(): HTMLElement;
-// }
-
 // Интерфейс eventEmitter - обеспечивает работу событий(слушатель событий)
 export interface IEventEmitter {
 	emit: (event: string, data?: unknown) => void;
@@ -101,9 +86,8 @@ export interface IEventData {
 }
 
 // Интерфейс успешной оплаты товара
-export interface ISuccessContent {
-	template: HTMLTemplateElement;
-	render(): HTMLElement;
+export interface ISuccess {
+	render(total: number): HTMLElement;
 }
 
 // Тип оплаты товара
@@ -112,10 +96,20 @@ export enum PaymentType {
 	сash = 'cash',
 }
 
-// Интерфейс для описания результата заказа товара
-export interface IOrderResult {
-	id: string;
+// Интерфейс для данных заказа
+export interface IOrderInfo {
+	payment: string;
+	email: string;
+	phone: string;
+	address: string;
 	total: number;
+	items: string[];
+}
+
+// Интерфейс для результата обработки заказа
+export interface IOrderResult {
+	success: boolean;
+	message: string;
 }
 
 // Интерфейс реализует контент оформления заказа
@@ -125,35 +119,24 @@ export interface IOrderContent {
 	render(): HTMLElement;
 }
 
-// Интерфейс реализует контент контактов
-export interface IContactsContent {
-	valid: boolean;
-	template: HTMLTemplateElement;
-	render(): HTMLElement;
-}
-
 // Формы
 
-// Интерфейс формы оформления заказа товара
-export interface IRegistrationOrder {
-	payment: string;
-	email: string;
-	phone: string;
-	address: string;
-	total: number;
-	items: string[];
-}
-
-// Интерфейс валидации формы оформления заказа товара
-export interface IOrderModel {
-	order: IRegistrationOrder;
-	isValid(order: IRegistrationOrder): boolean;
+// Интерфейс реализует контент контактов
+export interface IContactsModel {
+	formElement: HTMLFormElement; // Элемент формы
+	submitButton: HTMLButtonElement; // Кнопка отправки
+	errorDisplay: HTMLElement; // Элемент для отображения ошибок
+	emailInput: HTMLInputElement; // Поле для email
+	phoneInput: HTMLInputElement; // Поле для телефона
+	setupEventListeners(): void; // Метод для настройки обработчиков событий
+	updateSubmitButton(): void; // Метод для обновления состояния кнопки отправки
+	set isValid(isValid: boolean); // Сеттер для установки валидности формы
+	set errorMessages(messages: string[]); // Сеттер для отображения ошибок
+	render(): HTMLElement; // Метод для рендеринга формы
 }
 
 // Интерфейс для работы модальных окон
 export interface IModalWork {
-	// openModal: (element: HTMLElement) => void;
-	// closeModal: () => void;
 	open(): void;
 	close(): void;
 	render(): HTMLElement;
@@ -168,4 +151,43 @@ export interface IProductModel {
 	products: IProduct[];
 	selected: IProduct;
 	setDetail(item: IProduct): void;
+}
+
+// Интерфейс для формы заказа
+export interface IOrderModel {
+	formElement: HTMLFormElement; // Элемент формы
+	paymentButtons: HTMLButtonElement[]; // Кнопки выбора метода оплаты
+	submitButton: HTMLButtonElement; // Кнопка отправки формы
+	errorDisplay: HTMLElement; // Элемент для отображения ошибок
+	render(): HTMLElement; // Метод для рендеринга формы
+	setupEventListeners(): void; // Метод для настройки обработчиков событий
+	updateSubmitButton(): void; // Метод для обновления состояния кнопки отправки
+}
+
+// Интерфейс для ошибок формы
+export interface errorsForm {
+	address?: string;
+	payment?: string;
+	email?: string;
+	phone?: string;
+}
+
+export interface IFormModel {
+	payment: string; // Способ оплаты
+	email: string; // Электронная почта
+	phone: string; // Телефон
+	address: string; // Адрес доставки
+	setOrderAddress(field: string, value: string): void; // Установить значение поля адреса
+	validateOrder(): boolean; // Проверить правильность данных заказа
+	setOrderData(field: string, value: string): void; // Установить данные для контактов
+	validateContacts(): boolean; // Проверить правильность контактных данных
+	getOrder(): Omit<IOrderInfo, 'total' | 'items'>; // Получить данные заказа
+	getErrors(): errorsForm; // Получить ошибки формы
+}
+
+export interface FormErrors {
+	address?: string;
+	payment?: string;
+	email?: string;
+	phone?: string;
 }

@@ -1,4 +1,4 @@
-import { IEvents } from '../base/events';
+import { IEvents } from '../base/Events';
 import { IModalWork } from '../../types';
 
 export class Modal implements IModalWork {

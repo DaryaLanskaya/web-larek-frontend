@@ -1,5 +1,5 @@
 import { ICard, IProduct, IActions } from '../../types';
-import { IEvents } from '../base/events';
+import { IEvents } from '../base/Events';
 
 export class Card implements ICard {
 	protected _element: HTMLElement; // шаблон карточки
@@ -7,7 +7,13 @@ export class Card implements ICard {
 	protected _price: HTMLElement; // шаблон цены
 	protected _image?: HTMLImageElement; // шаблон картинки
 	protected _category?: HTMLElement; // шаблон категории
-
+	protected _colors = <Record<string, string>>{
+		дополнительное: 'additional',
+		'софт-скил': 'soft',
+		кнопка: 'button',
+		'хард-скил': 'hard',
+		другое: 'other',
+	};
 	constructor(
 		template: HTMLTemplateElement,
 		protected events: IEvents,
@@ -52,8 +58,17 @@ export class Card implements ICard {
 		this._image.alt = alt;
 	}
 
+	// // Метод для установки категории товара
+	private setCategory(category: string): void {
+		this._category.textContent = category; // Устанавливаем текст категории
+		this._category.className = `card__category card__category_${
+			this._colors[category] || 'default'
+		}`; // Устанавливаем класс в зависимости от категории
+	}
+
 	render(data: IProduct): HTMLElement {
-		this._category.textContent = data.category;
+		this.setCategory(data.category);
+
 		this.setTitle(this._title, data.title);
 		this.setImage(data.image, data.title);
 		this._price.textContent = this.setPrice(data.price);

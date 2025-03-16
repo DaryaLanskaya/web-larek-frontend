@@ -1,8 +1,8 @@
 import { IBasket } from '../../types';
 import { createElement } from '../../utils/utils';
-import { IEvents } from '../base/events';
+import { IEvents } from '../base/Events';
 
-export class Basket implements IBasket {
+export class BasketContent implements IBasket {
 	private basketElement: HTMLElement; // Элемент корзины
 	private titleElement: HTMLElement; // Заголовок корзины
 	private itemListElement: HTMLElement; // Список товаров

@@ -1,5 +1,10 @@
-import { IOrderResult, IProduct, IProducts } from './../types/index';
-import { Api, ApiListResponse } from './base/api';
+import {
+	IOrderInfo,
+	IOrderResult,
+	IProduct,
+	IProducts,
+} from './../types/index';
+import { Api, ApiListResponse } from './base/Api';
 
 export interface ILarekAPI {
 	getProductList: () => Promise<IProduct[]>;
@@ -24,7 +29,7 @@ export class LarekAPI extends Api implements ILarekAPI {
 		);
 	}
 
-	// postOrder(orderData: IOrder): Promise<IOrderResult> {
-	// 	return this.post('/order', orderData).then((data: IOrderResult) => data);
-	// }
+	postOrder(orderData: IOrderInfo): Promise<IOrderResult> {
+		return this.post('/order', orderData).then((data: IOrderResult) => data);
+	}
 }

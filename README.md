@@ -179,12 +179,11 @@ export interface IEventData {
 Интерфейс данных для передачи в eventEmitter(слушатель событий).  
 Необходим для его корректной работы.
 
-### interface ISuccessContent
+### interface ISuccess
 
 ```
-export interface ISuccessContent {
-	template: HTMLTemplateElement;
-	render(): HTMLElement;
+export interface ISuccess {
+	render(total: number): HTMLElement;
 }
 ```
 

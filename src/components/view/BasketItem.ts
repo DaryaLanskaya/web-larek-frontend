@@ -18,7 +18,7 @@ export class BasketItem implements IBasketItem {
 		this._actions = actions; // Присваиваем действия
 		this.bindEvents(); // Привязываем события
 	}
-	/** Клонирует шаблон элемента корзины */
+	// Клонирует шаблон элемента корзины
 	private cloneTemplate(): HTMLElement {
 		const item = this.template.content.firstElementChild?.cloneNode(
 			true
@@ -27,7 +27,7 @@ export class BasketItem implements IBasketItem {
 		return item;
 	}
 
-	/** Инициализирует элементы внутри корзины */
+	// Инициализирует элементы внутри корзины
 	private setupElements(): {
 		index: HTMLElement;
 		title: HTMLElement;
@@ -41,14 +41,14 @@ export class BasketItem implements IBasketItem {
 			buttonDelete: this.getElement<HTMLButtonElement>('.basket__item-delete'), // Кнопка удаления
 		};
 	}
-	/** Получает элемент из корзины, кидает ошибку, если не найден */
+	// Получает элемент из корзины, кидает ошибку, если не найден
 	private getElement<T extends HTMLElement = HTMLElement>(selector: string): T {
 		const element = this._basketItem.querySelector<T>(selector);
 		if (!element) throw new Error(`Элемент ${selector} не найден в шаблоне`); // Ошибка, если элемент не найден
 		return element;
 	}
 
-	/** Добавляет обработчик событий (например, для удаления товара) */
+	// Добавляет обработчик событий (например, для удаления товара)
 	private bindEvents(): void {
 		if (this._actions?.onClick) {
 			// Если есть обработчик, привязываем его к кнопке удаления
@@ -62,19 +62,19 @@ export class BasketItem implements IBasketItem {
 		}
 	}
 
-	/** Форматирует цену для отображения */
+	// Форматирует цену для отображения
 	private formatPrice(value: number | null): string {
 		return value ? `${value} синапсов` : 'Без цены'; // Если цена не указана, выводим "Без цены"
 	}
 
-	/** Обновляет текстовое содержимое элемента */
+	// Обновляет текстовое содержимое элемента
 	private updateText(element: HTMLElement, value: string): void {
 		if (element.textContent !== value) {
 			element.textContent = value;
 		}
 	}
 
-	/** Рендерит элемент корзины с данными товара */
+	// Рендерит элемент корзины с данными товара
 	public render(data: IProduct, index: number): HTMLElement {
 		this.updateText(this._elements.index, String(index)); // Обновляем индекс товара
 		this.updateText(this._elements.title, data.title); // Обновляем название товара

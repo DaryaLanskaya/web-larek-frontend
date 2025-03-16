@@ -1,6 +1,6 @@
 import { IAppState, IProduct } from '../types';
 import { Model } from './base/Model';
-import { IEvents } from './base/events';
+import { IEvents } from './base/Events';
 
 export class Product extends Model<IProduct> {
 	id: string;
