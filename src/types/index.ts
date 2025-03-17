@@ -19,11 +19,6 @@ export interface ICard {
 	render(data: IProduct): HTMLElement;
 }
 
-// Интерфейс ошибки сервера
-export interface IErrorMessage {
-	error: string;
-}
-
 // Интерфейс для модели корзины
 export interface IBasketModel {
 	basketProducts: IProduct[]; // Список товаров в корзине
@@ -105,19 +100,6 @@ export interface IActions {
 	onClick: (event: MouseEvent) => void;
 }
 
-// Интерфейс для отображения контента с карточкой товара.
-export interface IProductContent {
-	template: HTMLTemplateElement;
-	render(product: IProduct): HTMLElement;
-}
-
-// Интерфейс для отображения страницы
-export interface IPage {
-	counter: number; // меняет содержимое счетчика на полученное.
-	catalog: HTMLElement[]; // меняет содержмое каталога на полученные элементы.
-	locked: boolean; // меняет класс обертки на значение, соответствующее переданному.
-}
-
 // Интерфейс для вывода детальной карточки на страницу
 export interface ICardDetail {
 	text: HTMLElement;
@@ -128,12 +110,6 @@ export interface ICardDetail {
 // Интерфейс для элемента корзины
 export interface IBasketItem {
 	render(data: IProduct, index: number): HTMLElement; // Метод для рендеринга элемента корзины
-}
-
-// Тип оплаты товара
-export enum PaymentType {
-	оnline = 'online',
-	сash = 'cash',
 }
 
 // Формы
@@ -150,10 +126,6 @@ export interface IContactsModel {
 	set isValid(isValid: boolean); // Сеттер для установки валидности формы
 	set errorMessages(messages: string[]); // Сеттер для отображения ошибок
 	render(): HTMLElement; // Метод для рендеринга формы
-}
-
-export interface IAppState {
-	catalog: IProduct[];
 }
 
 // Интерфейс для продуктов

@@ -1,13 +1,10 @@
 import { Success } from './components/View/Success';
 import './scss/styles.scss';
-import { Component } from './components/base/Component';
 import { EventEmitter, IEvents } from './components/base/Events';
 import { ensureElement } from './utils/utils';
-import { errorsForm, IOrderInfo, IPage, IProduct } from './types/index';
+import { errorsForm, IOrderInfo, IProduct } from './types/index';
 import { API_URL, CDN_URL } from './utils/constants';
 import { LarekAPI } from './components/LarekAPI';
-import { AppState } from './components/AppData';
-import { Page } from './components/View/Page';
 import { Card } from './components/View/Card';
 import { Modal } from './components/View/Modal';
 import { CardDetail } from './components/View/CardDetail';
@@ -44,8 +41,6 @@ const successTemplate = document.querySelector(
 
 const events = new EventEmitter();
 const api = new LarekAPI(CDN_URL, API_URL);
-const appData = new AppState({}, events);
-const page = new Page(document.body, events);
 const productModel = new ProductModel(events);
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 const basket = new BasketContent(basketTemplate, events);
