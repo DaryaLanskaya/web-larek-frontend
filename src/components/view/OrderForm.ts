@@ -7,7 +7,7 @@ export class OrderForm implements IOrderModel {
 	public paymentButtons: HTMLButtonElement[]; // Кнопки выбора метода оплаты
 	public submitButton: HTMLButtonElement; // Кнопка отправки формы
 	public errorDisplay: HTMLElement; // Элемент для ошибок
-	private addressInput: HTMLInputElement; // Поле для адреса
+	private addressInput: HTMLInputElement; // Поле для ввода адреса
 	private selectedPayment: string | null = null; // Переменная для выбранного метода оплаты
 
 	// Конструктор принимает шаблон формы и события
@@ -24,12 +24,12 @@ export class OrderForm implements IOrderModel {
 		this.errorDisplay = this.formElement.querySelector('.form__errors')!; // Элемент для ошибок
 		this.addressInput = this.formElement.querySelector(
 			'input[name="address"]'
-		)! as HTMLInputElement; // Поле для адреса
+		)! as HTMLInputElement; //  Поле для ввода адреса
 		this.setupEventListeners(); // Настроим обработчики событий
 		this.updateSubmitButton(); // Обновим состояние кнопки отправки
 	}
 
-	// Метод для настройки обработчиков событий
+	// Метод - используется для настройки обработчиков событий
 	public setupEventListeners(): void {
 		// Для каждой кнопки метода оплаты добавляем обработчик событий
 		this.paymentButtons.forEach((button) => {
@@ -66,7 +66,7 @@ export class OrderForm implements IOrderModel {
 		});
 	}
 
-	// Метод для выбора метода оплаты
+	// Метод - используется для выбора метода оплаты
 	private selectPayment(payment: string): void {
 		this.selectedPayment = payment; // Устанавливаем выбранный метод
 		// Обновляем состояние кнопок оплаты
@@ -76,7 +76,7 @@ export class OrderForm implements IOrderModel {
 		this.updateSubmitButton(); // Обновляем кнопку отправки
 	}
 
-	// Метод для обновления состояния кнопки отправки
+	// Метод- используется для обновления состояния кнопки отправки
 	public updateSubmitButton(): void {
 		const address = this.addressInput.value.trim(); // Убираем лишние пробелы
 		// Проверяем, что метод оплаты выбран, а адрес введен
@@ -94,7 +94,7 @@ export class OrderForm implements IOrderModel {
 		this.errorDisplay.textContent = messages.join('; '); // Отображаем ошибки через точку с запятой
 	}
 
-	// Метод для рендеринга формы
+	// Рендер формы
 	public render(): HTMLElement {
 		return this.formElement; // Возвращаем саму форму
 	}

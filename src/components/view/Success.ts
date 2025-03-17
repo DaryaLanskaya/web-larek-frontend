@@ -10,7 +10,7 @@ export class Success implements ISuccess {
 	// Конструктор принимает шаблон и события
 	constructor(template: HTMLTemplateElement, private events: IEvents) {
 		this.successElement = template.content
-			.querySelector('.order-success')
+			.querySelector('.order-success')!
 			.cloneNode(true) as HTMLElement; // Клонируем шаблон
 		this.descriptionElement = this.successElement.querySelector(
 			'.order-success__description'
@@ -32,6 +32,6 @@ export class Success implements ISuccess {
 	// Метод для рендеринга успешного сообщения с итоговой суммой
 	public render(total: number): HTMLElement {
 		this.descriptionElement.textContent = `Списано ${total} синапсов`; // Заменяем текст в описании
-		return this.successElement; // Возвращаем элемент с рендеренным сообщением
+		return this.successElement; // Возвращаем элемент с созданным сообщением
 	}
 }

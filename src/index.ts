@@ -3,7 +3,7 @@ import './scss/styles.scss';
 import { Component } from './components/base/Component';
 import { EventEmitter, IEvents } from './components/base/Events';
 import { ensureElement } from './utils/utils';
-import { FormErrors, IOrderInfo, IPage, IProduct } from './types/index';
+import { errorsForm, IOrderInfo, IPage, IProduct } from './types/index';
 import { API_URL, CDN_URL } from './utils/constants';
 import { LarekAPI } from './components/LarekAPI';
 import { AppState } from './components/AppData';
@@ -153,7 +153,7 @@ events.on('order:submit', () => {
 	if (formModel.validateOrder()) {
 		events.emit('contacts:open');
 	} else {
-		events.emit('formErrors:change', formModel.getErrors());
+		events.emit('errorsForm:change', formModel.getErrors());
 	}
 });
 
@@ -164,7 +164,7 @@ events.on('contacts:open', () => {
 	modal.render();
 });
 
-events.on('formErrors:change', (errors: FormErrors) => {
+events.on('errorsForm:change', (errors: errorsForm) => {
 	order.errorMessages = Object.values(errors).filter(Boolean) as string[];
 	contacts.errorMessages = Object.values(errors).filter(Boolean) as string[];
 });
@@ -177,7 +177,7 @@ events.on('contacts:submit', () => {
 	if (formModel.validateContacts()) {
 		events.emit('success:open');
 	} else {
-		events.emit('formErrors:change', formModel.getErrors());
+		events.emit('errorsForm:change', formModel.getErrors());
 	}
 });
 events.on('contacts:validate', () => {

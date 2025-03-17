@@ -135,21 +135,34 @@ export interface IErrorMessage {
 
 ```
 export interface IBasketModel {
-	add(item: Partial<IProduct>): void;
-	remove(item: Partial<IProduct>): void;
-	clear(): void;
-	total: number;
+	basketProducts: IProduct[];
+	setSelectedCard(item: IProduct): void;
+	deleteCardToBasket(item: IProduct): void;
+	clearBasketProducts(): void;
+	getCounter(): number;
+	getTotalPrice(): number;
+	getProductIds(): string[];
 }
-```
-
-Отвечает за функциональность корзины товара.  
-Используются методы для взаимодействия с данными(добавление товара в корзину, удаление товара из корзины).
-
-### interface IBasketModel
 
 ```
-export interface IBasketContent {
-	template: HTMLTemplateElement;
+
+Интерфейс для модели корзины.  
+Используются методы для взаимодействия с данными:
+
+- Добавление товара в корзину.
+- Удаление товара из корзины.
+- Очистка всей корзину.
+- Получение количества товаров в корзине.
+- Получение общей стоимости всех товаров в корзине.
+- Получение идентификаторов всех товаров в корзине.
+
+### interface IBasket
+
+```
+export interface IBasket {
+	counter(count: number): void;
+	totalPrice(total: number): void;
+	updateItems(items: HTMLElement[]): void;
 	render(): HTMLElement;
 }
 ```
@@ -165,7 +178,10 @@ export interface IEventEmitter {
 ```
 
 Интерфейс EventEmitter обеспечивает работу событий.  
-Его функции: возможность установить и снять слушателей событий, вызвать слушателей при возникновении события.
+Его функции:
+
+- Возможность установить и снять слушателей событий.
+- Вызвать слушателей при возникновении события.
 
 ### interface IEventData
 
@@ -189,21 +205,43 @@ export interface ISuccess {
 
 Интерфейс, который описывает успешную оплату товара.
 
-### interface IOrderResult
+### interface IOrderContent
 
 ```
-export interface IOrderResult {
-	id: string;
-	total: number;
+export interface IOrderContent {
+	valid: boolean;
+	template: HTMLTemplateElement;
+	render(): HTMLElement;
 }
 ```
 
-Интерфейс для описания результата заказа товара.
+Интерфейс реализует контент оформления заказа.
 
-### interface IRegistrationOrder
+### interface IOrderModel
 
 ```
-export interface IRegistrationOrder {
+export interface IOrderModel {
+	formElement: HTMLFormElement;
+	paymentButtons: HTMLButtonElement[];
+	submitButton: HTMLButtonElement;
+	errorDisplay: HTMLElement;
+	render(): HTMLElement;
+	setupEventListeners(): void;
+	updateSubmitButton(): void;
+}
+```
+
+Интерфейс для формы заказа.
+Используются методы для взаимодействия с данными:
+
+- Метод для рендеринга формы.
+- Метод для настройки обработчиков событий.
+- Метод для обновления состояния кнопки отправки.
+
+### interface IOrderInfo
+
+```
+export interface IOrderInfo {
 	payment: string;
 	email: string;
 	phone: string;
@@ -213,53 +251,90 @@ export interface IRegistrationOrder {
 }
 ```
 
-Интерфейс формы оформления заказа товара.
-
-### interface IOrderModel
-
-```
-export interface IOrderModel {
-	order: IRegistrationOrder;
-	isValid(order: IRegistrationOrder): boolean;
-}
-```
-
-Интерфейс валидации формы оформления заказа товара.
+Интерфейс для данных заказа.
 
 ### interface IModalWork
 
 ```
 export interface IModalWork {
-	openModal: (element: HTMLElement) => void;
-	closeModal: () => void;
+	open(): void;
+	close(): void;
+	render(): HTMLElement;
 }
 ```
 
-Интерфейс для работы модальных окон.
+Интерфейс для работы модальных окон.  
+Используtтся метод для взаимодействия с данными:
 
----
+- Метод для рендеринга модального окна.
 
-## События
+### interface IActions
 
-#### Генерируемые события приложения
+```
+export interface IActions {
+	onClick: (event: MouseEvent) => void;
+}
 
-- `modal: open` - событие открытия модального окна
-- `modal: close` - событие закрытия модального окна
-- `form-contacts: open` - открытие формы с номерами телефонов и email
-- `adress: submit` - подтверждение формы с адресом заказа и способом оплаты
-- `contacts: submit` - подтверждение и отправка заказа на сервер
-- `success: close` - закрытие окна успешной отправки формы
-- `formValidatedAddress: change` - изменение состояния валидации формы с адресом заказа и способом оплаты
-- `formValidatedContacts: change` - изменение состояния валидации формы с номерами телефонов и email
-- `form-adress: open` - открытие формы с адресом заказа и способом оплаты
-- `basket: open` - открытие корзины товара
-- `basket: removeproduct` - удаление карточки из корзины
-- `basket: submit` - подтверждение данных корзины
+```
 
-#### Системные события
+Интерфейс клика мышки на элемент.
 
-- `products: changed` - изменение массива карточек
-- `product: selected` - изменение открываемой в модальном окне карточки
+### interface IProductContent
+
+```
+export interface IProductContent {
+	template: HTMLTemplateElement;
+	render(product: IProduct): HTMLElement;
+}
+
+```
+
+Интерфейс для отображения контента с карточкой товара.
+Используtтся метод для взаимодействия с данными:
+
+- Метод для рендеринга карточки товара.
+
+### interface IPage
+
+```
+export interface IPage {
+	counter: number;
+	catalog: HTMLElement[];
+	locked: boolean;
+}
+
+```
+
+Интерфейс для отображения страницы.
+
+### interface ICardDetail
+
+```
+export interface ICardDetail {
+	text: HTMLElement;
+	button: HTMLButtonElement;
+	render(data: IProduct): HTMLElement;
+}
+
+```
+
+Интерфейс для вывода детальной карточки на страницу.
+Используtтся метод для взаимодействия с данными:
+
+- Метод для рендеринга карточки товара.
+
+### interface IBasketItem
+
+```
+export interface IBasketItem {
+	render(data: IProduct, index: number): HTMLElement;
+}
+```
+
+Интерфейс для элемента корзины.
+Используtтся метод для взаимодействия с данными:
+
+- Метод для рендеринга элемента корзины.
 
 ---
 
@@ -281,22 +356,21 @@ export interface IModalWork {
 
 ## Слой данных (Model)
 
-Представлен следующими классами: ProductsModel, BasketModel и OrderModel.
+Представлен следующими классами: ProductModel, BasketModel и FormModel.
 
-#### Класс ProductsModel
+#### Класс ProductModel
 
 Класс отвечает за хранение и управление данными товарных карточек.  
 Конструктор класса принимает экземпляр брокера событий.
 
 В качестве полей класса используются следующие данные:
 
-- `_products: IProduct[]` - список объектов, представляющих товарные карточки.
-- `_preview: string | null` - идентификатор карточки, выбранной для отображения в модальном окне.
-- `events: IEvents` - объект класса EventEmitter, используемый для генерации событий.
+- `products: IProduct[]` - список объектов, представляющих товарные карточки.
+- `selected: IProduct` - идентификатор карточки, выбранной для отображения в модальном окне.
 
-Используется для работы с данными:
+Методы и события для взаимодействия с данными:
 
-Методы для установки (сеттеры) и получения (геттеры) значений полей класса.
+- `setDetail(item: IProduct): void` - установка полей товарной карточки.
 
 #### Класс BasketModel
 
@@ -305,31 +379,37 @@ export interface IModalWork {
 
 В качестве полей класса используются следующие данные:
 
-- `_items: Map<string, number>` - структура данных, содержащая сведения о товарах, находящихся в корзине.
-  `Ключ:` идентификатор товара. </br>
-  `Value:` цена товара. </br>
-- `_total: number` - суммарная цена всех товаров, добавленных в корзину.
+- `basketProducts: IProduct[]` - структура данных, содержащая сведения о товарах, находящихся в корзине.
 
-Методы для взаимодействия с данными:
+Методы и события для взаимодействия с данными:
 
-- `add(item: string): void` - добавление товара в корзину.
-- `remove(item: string): void` - удаление товара из корзины
+- `setSelectedCard(item: IProduct): void` - добавление товара в корзину.
+- `deleteCardToBasket(item: IProduct): void` - удаление товара из корзины.
+- `clearBasketProducts(): void` - очистить всю корзину.
+- `clearBasketProducts(): void` - получить количество товаров в корзине.
+- `getTotalPrice(): number` - очистить всю корзину.
+- `getProductIds(): string[]` - получить идентификаторы всех товаров в корзине
 
-- Методы для установки (сеттеры) и получения (геттеры) значений полей класса.
+#### Класс FormModel
 
-#### Класс OrderModel
-
-Класс управляет хранением и логикой обработки заказа.  
+Класс управляет хранением и логикой обработки формы.  
 Конструктор класса принимает экземпляр брокера событий.
 
 В качестве полей класса используются следующие данные:
 
-- `_order: IRegistrationOrder` - объект в котором содержится информация о заказе.
+- `payment: string` - cпособ оплаты.
+- `email: string` - электронная почта.
+- `phone: string` - телефон.
+- `address: string` - адрес доставки.
 
-Методы для взаимодействия с данными:
+Методы и события для взаимодействия с данными:
 
-- `isValid(order: IRegistrationOrder): boolean` - проверяет валидность заполненных данных.
-- Методы для установки (сеттеры) и получения (геттеры) значений полей класса.
+- `setOrderAddress(field: string, value: string): void` - установливает значение поля адреса.
+- `validateOrder(): boolean` - проверяет правильность данных заказа.
+- `setOrderData(field: string, value: string): void` - установливает данные для контактов.
+- `validateContacts(): boolean` - проверяет правильность контактных данных.
+- `getOrder(): Omit<IOrderInfo, 'total' | 'items'>` - получает данные заказа.
+- `getErrors(): errorsForm;` - получает ошибки формы.
 
 ---
 
@@ -355,6 +435,9 @@ export interface IModalWork {
 - `counter` - меняет содержимое счетчика на полученное.
 - `catalog` - меняет содержмое каталога на полученные элементы.
 - `locked` - меняет класс обертки на значение, соответствующее переданному.
+- Методы и события в классе:
+
+- `bids:open` - событие при клике на элемент корзины.
 
 #### Класс Card
 
@@ -363,33 +446,36 @@ export interface IModalWork {
 
 В качестве полей класса используются следующие данные:
 
-- `_id: string` - id.
-- `_description: string` - описание.
-- `_image: string` - картинка.
-- `_title: string` - заголовок.
-- `_category: string` - категория.
-- `_price: number | null` - цена.
+- `_element` - шаблон карточки.
+- `_title` - заголовок.
+- `_price` - стоимость.
+- `_image` - изображение.
+- `_category` - категория.
+- `_colors` - категории.
 
-Методы в классе:
+Методы и события в классе:
 
 - `render(product: IProduct): HTMLElement` - получает готовый элемент.
 
 #### Класс Modal
 
 Обеспечивает отображение контента через модальное окно.  
-Конструктор класса принимает HTMLTemplateElement, HTMLElement (контейнер) и экземпляр брокера событий.
+Конструктор класса принимает HTMLElement (контейнер) и экземпляр брокера событий.
 
 В качестве полей класса используются следующие данные:
 
-- `closeButton: HTMLButtonElement` - кнопка закрытия модального окна.
-- `_content: HTMLElement` - контент, который необходимо отобразить.
-- `modalContainer: HTMLElement` - контейнер модального окна.
+- `сontainerModal: HTMLElement` - контейнер модального окна.
+- `buttonClose: HTMLButtonElement` - кнопка закрытияь.
+- `_content` - контент модального окна.
+- `_wapperPage: HTMLElement` - wapper страницы.
 
-Методы в классе:
+Методы и события в классе:
 
 - `element: HTMLElement` - получает готовый элемент.
-- `open(): void` - открывает модальное окно.
-- `close(): void` - закрывает модальное окно.
+- `modal: open` - открывает модальное окно.
+- `modal: close` - закрывает модальное окно.
+- `open()` - открывает модальное окно.
+- `close()` - закрывает модальное окно.
 
 #### Класс BasketContent
 
@@ -398,66 +484,123 @@ export interface IModalWork {
 
 В качестве полей класса используются следующие данные:
 
-- `button-order` - кнопка "Оформить".
-- `button-delete` - кнопка "Удалить".
+- `basketElement: HTMLElement` - шаблон корзины.
+- `titleElement: HTMLElement` - заголовок корзины.
+- `private itemListElement: HTMLElement` - список товаров в корзине.
+- `actionButton: HTMLButtonElement` - кнопка - для перехода к оформлению заказа.
+- `totalPriceElement: HTMLElement` - общая стоимость заказа.
+- `headerButton: HTMLButtonElement` - кнопка корзины в header.
+- `headerCounter: HTMLElement` - счётчик товаров в header.
 
-Методы в классе:
+Методы и события в классе:
 
+- `order:open` - открывает форму оформления заказа.
+- `basket:open` - закрывает корзину.
+- `setupEventListeners(): void` - настройка обработчиков событий.
+- `updateItems(items: HTMLElement[]): void` - обновление списка товаров в корзине.
+- `сlearBasket(): void` - очистка корзины.
+- `counter(count: number): void` - метод для отображения количества товаров в корзине (в header).
+- `totalPrice(total: number): void` - метод для отображения общей стоимости товаров в корзине.
 - `render(): HTMLElement` - получает готовый элемент.
 
-#### Класс SuccessContent
+#### Класс BasketItem
+
+Отвечает за отображение элемента корзины с данными товара.
+Конструктор класса принимает HTMLTemplateElement и экземпляр брокера событий, действия.
+
+В качестве полей класса используются следующие данные:
+
+- `index: HTMLElement` - индекс товара в корзине.
+- `title: HTMLElement` - заголовок товара.
+- `price: HTMLElement` - стоимость товара.
+- `buttonDelete: HTMLButtonElement` - кнопка для удаления товара из корзины.
+
+Методы и события в классе:
+
+- `cloneTemplate(): HTMLElement` - метод копирует шаблон элемента корзины.
+- `setupElements()` - инициализация элемента внутри корзины.
+- `bindEvents(): void` - метод добавляет обработчик событий.
+- `formatPrice(value: number | null): string` - метод форматирует цену для отображения.
+- `updateText(element: HTMLElement, value: string): void` - метод обновляет текстовое содержимое элемента.
+- `render(data: IProduct, index: number): HTMLElement` - получает готовый элемент.
+
+#### Класс Success
 
 Отвечает за отображение контента успешного оформления заказа.  
 Конструктор класса принимает HTMLTemplateElement и экземпляр брокера событий.
 
 В качестве полей класса используются следующие данные:
 
-- `button-success` - кнопка "За новыми покупками!".
+- `successElement: HTMLElement` - элемент контейнера для успешного сообщения.
+- `descriptionElement: HTMLElement` -элемент для описания успешного завершения.
+- `closeButton: HTMLButtonElement` - кнопка для закрытия сообщения.
 
-Методы в классе:
+Методы и события в классе:
 
-- `render(): HTMLElement` - получает готовый элемент.
+- `success:close` - обработчик для закрытия успешного сообщения.
+- `setupEventListeners(): void` - метод для настройки обработчиков событий.
+- `render(total: number): HTMLElement` - метод для рендеринга успешного сообщения с итоговой суммой.
 
-#### Класс ContactsContent
+#### Класс ContactsForm
 
 Отображает контент контактов.  
 Конструктор класса принимает HTMLTemplateElement и экземпляр брокера событий.
 
 В качестве полей класса используются следующие данные:
 
-- `inputPhone` - элемент для ввода номера телефона.
-- `button-pay` - кнопка "Оплатить".
-- `inputEmail` - элемент для ввода почты.
+- `formElement: HTMLFormElement` - элемент формы.
+- `submitButton: HTMLButtonElement` - кнопка отправки.
+- `errorDisplay: HTMLElement` - элемент для ошибок.
+- `emailInput: HTMLInputElement` - поле email.
+- `phoneInput: HTMLInputElement` - поле для телефона.
 
-Методы в классе:
+Методы и события в классе:
 
+- `contacts:inputChanged` - изменения в полях формы.
+- `contacts:submit` - отправка формы.
+- `contacts:validate` - валидация формы.
+- `setupEventListeners(): void` - используется для настройки обработчиков событий.
+- `updateSubmitButton(): void` - используется для обновления состояния кнопки отправки.
 - `render(): HTMLElement` - получает готовый элемент.
 
-#### Класс OrderContent
+#### Класс OrderForm
 
 Отображает контент оформления заказа.  
 Конструктор класса принимает HTMLTemplateElement и экземпляр брокера событий.
 
 В качестве полей класса используются следующие данные:
 
-- `inputAdress` - инпут для ввода адреса.
-- `button-next` - кнопка "Далее".
+- `formElement: HTMLFormElement` - элемент формы.
+- `paymentButtons: HTMLButtonElement[]` - кнопки выбора метода оплаты.
+- `submitButton: HTMLButtonElement` - кнопка отправки формы.
+- `errorDisplay: HTMLElement` - элемент для ошибок.
+- `addressInput: HTMLInputElement` - поле для ввода адреса.
+- `selectedPayment: string | null = null` - переменная для выбранного метода оплаты.
 
-Методы в классе:
+Методы и события в классе:
 
-- `render(): HTMLElement` - получает готовый элемент.
+- `order:paymentMethodSelected` - выбираем метод оплаты.
+- `order:addressFieldChanged` - изменяем адрес.
+- `order:submit` - отправляем событие отправки формы.
+- `order:validate` - отправляем событие отправки формы.
+- `setupEventListeners(): void` - используется для настройки обработчиков событий.
+- `selectPayment(payment: string): void` - используется для выбора метода оплаты.
+- `updateSubmitButton(): void` - используется для обновления состояния кнопки отправки.
+- `render():HTMLElement` - получает готовый элемент.
 
-#### Класс ProductContent
+#### Класс CardDetail
 
 Отображает контент с карточкой товара.  
-Конструктор класса принимает HTMLTemplateElement и экземпляр брокера событий.
+Конструктор класса принимает HTMLTemplateElement и экземпляр брокера событий, действие.
 
 В качестве полей класса используются следующие данные:
 
-- `button-buy` - кнопка "Купить"
+- `text: HTMLElement;` - текст у продукта.
+- `button: HTMLButtonElement` - кнопка "В корзину" у продукта.
 
-Методы в классе:
+Методы и события в классе:
 
+- `getPriceText(value: number | null)` - метод который записывает текст стоимости.
 - `render(product: IProduct): HTMLElement` - получает готовый элемент.
 
 ---

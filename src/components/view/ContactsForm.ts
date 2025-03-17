@@ -8,11 +8,10 @@ export class ContactsForm implements IContactsModel {
 	public emailInput: HTMLInputElement; // Поле email
 	public phoneInput: HTMLInputElement; // Поле для телефона
 
-	// Конструктор принимает шаблон формы и события
 	constructor(template: HTMLTemplateElement, private events: IEvents) {
 		this.formElement = template.content
 			.querySelector('.form')!
-			.cloneNode(true) as HTMLFormElement; // Клонируем шаблон формы
+			.cloneNode(true) as HTMLFormElement; // Копируем шаблон формы
 		this.submitButton = this.formElement.querySelector(
 			'.button'
 		)! as HTMLButtonElement; // Находим кнопку отправки
@@ -24,12 +23,12 @@ export class ContactsForm implements IContactsModel {
 			'input[name="phone"]'
 		)! as HTMLInputElement; // Поле phone
 		this.setupEventListeners(); // Настроим обработчики событий
-		this.updateSubmitButton(); // Обновим состояние кнопки отправки
+		this.updateSubmitButton(); // Обновляем состояние кнопки отправки
 	}
 
-	// Метод для настройки обработчиков событий
+	// Метод - используется для настройки обработчиков событий
 	public setupEventListeners(): void {
-		// Слушаем изменения в полях формы
+		// Изменения в полях формы
 		this.formElement.addEventListener('input', (event: Event) => {
 			const input = event.target as HTMLInputElement;
 			const fieldName = input.name;
@@ -41,24 +40,24 @@ export class ContactsForm implements IContactsModel {
 			this.updateSubmitButton();
 		});
 
-		// Слушаем отправку формы
+		//  Отправка формы
 		this.formElement.addEventListener('submit', (event: Event) => {
 			event.preventDefault();
 			this.events.emit('contacts:submit');
 		});
 	}
 
-	// Метод для обновления состояния кнопки отправки
+	// Метод - используется для обновления состояния кнопки отправки
 	public updateSubmitButton(): void {
 		const email = this.emailInput.value.trim();
 		const phone = this.phoneInput.value.trim();
 		const isValid = phone.length != 0 && email.length != 0;
-		this.events.emit('contacts:validate', { isValid }); // Просим модель проверить валидацию
+		this.events.emit('contacts:validate', { isValid }); // Валидация
 	}
 
 	// Сеттер для установки валидности формы
 	public set isValid(isValid: boolean) {
-		this.submitButton.disabled = !isValid; // Включаем/выключаем кнопку отправки в зависимости от валидности
+		this.submitButton.disabled = !isValid; // Включаем/выключаем кнопку отправки(состояние disabled) в зависимости от валидности
 	}
 
 	// Сеттер для отображения ошибок
@@ -66,8 +65,8 @@ export class ContactsForm implements IContactsModel {
 		this.errorDisplay.textContent = messages.join('; '); // Отображаем все сообщения об ошибках через точку с запятой
 	}
 
-	// Метод для рендеринга формы
+	// Метод - используется для рендеринга формы
 	public render(): HTMLElement {
-		return this.formElement; // Возвращаем саму форму, что нужно отрисовать
+		return this.formElement; // Возвращаем саму форму - которую нужно отрисовать
 	}
 }

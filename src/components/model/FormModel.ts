@@ -2,36 +2,33 @@ import { IFormModel, IOrderInfo, errorsForm } from '../../types';
 import { IEvents } from '../base/Events';
 
 export class FormModel implements IFormModel {
-	public payment: string = ''; // Начальное значение для способа оплаты
-	public email: string = ''; // Начальное значение для email
-	public phone: string = ''; // Начальное значение для телефона
-	public address: string = ''; // Начальное значение для адреса
+	public payment: string = ''; // Способ оплаты(изначальное значение)
+	public email: string = ''; // Email(изначальное значение)
+	public phone: string = ''; // Телефон(изначальное значение)
+	public address: string = ''; // Адрес(изначальное значение)
 	private errorsForm: errorsForm = {}; // Ошибки формы
 
-	// Конструктор, принимает объект событий для обработки событий в модели
-	constructor(private events: IEvents) {
-		// Удаляем вызов setupEventListeners, так как модель не должна заниматься обработкой событий
-	}
+	constructor(private events: IEvents) {}
 
-	// Установить адрес
+	// Устанавливаем адрес
 	public setOrderAddress(field: string, value: string): void {
 		if (field === 'address') {
 			this.address = value; // Присваиваем значение для адреса
 		}
-		this.validateOrder(); // Проверяем правильность данных заказа
+		this.validateOrder(); // Валидация данных заказа
 	}
 
 	// Валидация данных заказа
 	public validateOrder(): boolean {
 		const errors: errorsForm = {}; // Ошибки формы
 		if (!this.address) {
-			errors.address = 'Необходимо указать адрес'; // Если адрес пустой
+			errors.address = 'Нужно указать адрес'; // Если поле с адресом пустое
 		}
 		if (!this.payment) {
-			errors.payment = 'Выберите способ оплаты'; // Если способ оплаты не выбран
+			errors.payment = 'Выберите подходящий способ оплаты'; // Если способ оплаты не выбрали
 		}
-		this.errorsForm = errors; // Обновляем ошибки формы
-		this.events.emit('formErrors:change', this.errorsForm); // Эмитируем изменения ошибок
+		this.errorsForm = errors; // Обновление ошибок формы
+		this.events.emit('errorsForm:change', this.errorsForm); // Эмитируем изменения ошибок
 		return Object.keys(errors).length === 0; // Возвращаем true, если нет ошибок
 	}
 
@@ -42,37 +39,37 @@ export class FormModel implements IFormModel {
 		} else if (field === 'phone') {
 			this.phone = value; // Присваиваем значение для телефона
 		}
-		this.validateContacts(); // Проверяем правильность контактных данных
+		this.validateContacts(); // Валидация контактных данных
 	}
 
 	// Валидация контактных данных
 	public validateContacts(): boolean {
 		const errors: errorsForm = {}; // Ошибки формы
 		if (!this.email) {
-			errors.email = 'Нужно указать email'; // Если email пустой
+			errors.email = 'Нужно указать email'; // Если поле с email не заполнили
 		}
 
 		if (!this.phone) {
-			errors.phone = 'Нужно указать телефон'; // Если телефон пустой
+			errors.phone = 'Нужно указать телефон'; // Если поле с телефоном не заполнили
 		}
-		this.errorsForm = errors; // Обновляем ошибки формы
-		this.events.emit('formErrors:change', this.errorsForm); // Эмитируем изменения ошибок
+		this.errorsForm = errors; // Обновление ошибок формы
+		this.events.emit('errorsForm:change', this.errorsForm); // Эмитируем изменения ошибок
 		return Object.keys(errors).length === 0; // Возвращаем true, если нет ошибок
 	}
 
-	// Установить способ оплаты
+	// Установка способа оплаты
 	public setPayment(payment: string): void {
 		this.payment = payment; // Присваиваем способ оплаты
-		this.validateOrder(); // Проверяем правильность данных заказа
+		this.validateOrder(); // Валидация данных заказа
 	}
 
-	// Получить объект заказа для отправки
+	// Получение объекта заказа для отправки
 	public getOrder(): Omit<IOrderInfo, 'total' | 'items'> {
 		const orderRes: Omit<IOrderInfo, 'total' | 'items'> = {
-			payment: this.payment,
-			email: this.email,
-			phone: this.phone,
-			address: this.address,
+			payment: this.payment, // Способ оплаты
+			email: this.email, // Email
+			phone: this.phone, // Телефон
+			address: this.address, // Адрес
 		};
 		return orderRes;
 	}

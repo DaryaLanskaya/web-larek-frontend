@@ -1,8 +1,3 @@
-// Интерфейс клика мышки на элемент
-export interface IActions {
-	onClick: (event: MouseEvent) => void;
-}
-
 // Интерфейс товара
 export interface IProduct {
 	id: string;
@@ -19,43 +14,14 @@ export interface IProducts {
 	items: IProduct[];
 }
 
-//Интерфейс для отображения контента с карточкой товара.
-export interface IProductContent {
-	template: HTMLTemplateElement;
-	render(product: IProduct): HTMLElement;
-}
-
-//Интерфейс для отображения страницы
-export interface IPage {
-	counter: number; // меняет содержимое счетчика на полученное.
-	catalog: HTMLElement[]; // меняет содержмое каталога на полученные элементы.
-	locked: boolean; // меняет класс обертки на значение, соответствующее переданному.
-}
-
 //Интерфейс для вывода карточек на страницу
 export interface ICard {
 	render(data: IProduct): HTMLElement;
 }
 
-//Интерфейс для вывода детальной карточки на страницу
-export interface ICardDetail {
-	text: HTMLElement;
-	button: HTMLButtonElement;
-	render(data: IProduct): HTMLElement;
-	setButtonState(message: string): void;
-}
-
 // Интерфейс ошибки сервера
 export interface IErrorMessage {
 	error: string;
-}
-
-// Интерфейс для представления корзины
-export interface IBasket {
-	counter(count: number): void; // Рендерит количество товаров в корзине
-	totalPrice(total: number): void; // Рендерит общую стоимость товаров
-	updateItems(items: HTMLElement[]): void; // Обновляет список товаров в корзине
-	render(): HTMLElement; // Рендерит корзину
 }
 
 // Интерфейс для модели корзины
@@ -69,9 +35,12 @@ export interface IBasketModel {
 	getProductIds(): string[]; // Получить идентификаторы всех товаров в корзине
 }
 
-// Интерфейс для элемента корзины
-export interface IBasketItem {
-	render(data: IProduct, index: number): HTMLElement; // Метод для рендеринга элемента корзины
+// Интерфейс для представления корзины
+export interface IBasket {
+	counter(count: number): void; // Рендерит количество товаров в корзине
+	totalPrice(total: number): void; // Рендерит общую стоимость товаров
+	updateItems(items: HTMLElement[]): void; // Обновляет список товаров в корзине
+	render(): HTMLElement; // Рендерит корзину
 }
 
 // Интерфейс eventEmitter - обеспечивает работу событий(слушатель событий)
@@ -90,10 +59,22 @@ export interface ISuccess {
 	render(total: number): HTMLElement;
 }
 
-// Тип оплаты товара
-export enum PaymentType {
-	оnline = 'online',
-	сash = 'cash',
+// Интерфейс реализует контент оформления заказа
+export interface IOrderContent {
+	valid: boolean;
+	template: HTMLTemplateElement;
+	render(): HTMLElement;
+}
+
+// Интерфейс для формы заказа
+export interface IOrderModel {
+	formElement: HTMLFormElement; // Элемент формы
+	paymentButtons: HTMLButtonElement[]; // Кнопки выбора метода оплаты
+	submitButton: HTMLButtonElement; // Кнопка отправки формы
+	errorDisplay: HTMLElement; // Элемент для отображения ошибок
+	render(): HTMLElement; // Метод для рендеринга формы
+	setupEventListeners(): void; // Метод для настройки обработчиков событий
+	updateSubmitButton(): void; // Метод для обновления состояния кнопки отправки
 }
 
 // Интерфейс для данных заказа
@@ -112,11 +93,47 @@ export interface IOrderResult {
 	message: string;
 }
 
-// Интерфейс реализует контент оформления заказа
-export interface IOrderContent {
-	valid: boolean;
-	template: HTMLTemplateElement;
+// Интерфейс для работы модальных окон
+export interface IModalWork {
+	open(): void;
+	close(): void;
 	render(): HTMLElement;
+}
+
+// Интерфейс клика мышки на элемент
+export interface IActions {
+	onClick: (event: MouseEvent) => void;
+}
+
+// Интерфейс для отображения контента с карточкой товара.
+export interface IProductContent {
+	template: HTMLTemplateElement;
+	render(product: IProduct): HTMLElement;
+}
+
+// Интерфейс для отображения страницы
+export interface IPage {
+	counter: number; // меняет содержимое счетчика на полученное.
+	catalog: HTMLElement[]; // меняет содержмое каталога на полученные элементы.
+	locked: boolean; // меняет класс обертки на значение, соответствующее переданному.
+}
+
+// Интерфейс для вывода детальной карточки на страницу
+export interface ICardDetail {
+	text: HTMLElement;
+	button: HTMLButtonElement;
+	render(data: IProduct): HTMLElement;
+}
+
+// Интерфейс для элемента корзины
+export interface IBasketItem {
+	render(data: IProduct, index: number): HTMLElement; // Метод для рендеринга элемента корзины
+}
+
+// Тип оплаты товара
+export enum PaymentType {
+	оnline = 'online',
+	сash = 'cash',
 }
 
 // Формы
@@ -135,13 +152,6 @@ export interface IContactsModel {
 	render(): HTMLElement; // Метод для рендеринга формы
 }
 
-// Интерфейс для работы модальных окон
-export interface IModalWork {
-	open(): void;
-	close(): void;
-	render(): HTMLElement;
-}
-
 export interface IAppState {
 	catalog: IProduct[];
 }
@@ -153,17 +163,6 @@ export interface IProductModel {
 	setDetail(item: IProduct): void;
 }
 
-// Интерфейс для формы заказа
-export interface IOrderModel {
-	formElement: HTMLFormElement; // Элемент формы
-	paymentButtons: HTMLButtonElement[]; // Кнопки выбора метода оплаты
-	submitButton: HTMLButtonElement; // Кнопка отправки формы
-	errorDisplay: HTMLElement; // Элемент для отображения ошибок
-	render(): HTMLElement; // Метод для рендеринга формы
-	setupEventListeners(): void; // Метод для настройки обработчиков событий
-	updateSubmitButton(): void; // Метод для обновления состояния кнопки отправки
-}
-
 // Интерфейс для ошибок формы
 export interface errorsForm {
 	address?: string;
@@ -172,6 +171,7 @@ export interface errorsForm {
 	phone?: string;
 }
 
+// Интерфейс формы
 export interface IFormModel {
 	payment: string; // Способ оплаты
 	email: string; // Электронная почта
@@ -183,11 +183,4 @@ export interface IFormModel {
 	validateContacts(): boolean; // Проверить правильность контактных данных
 	getOrder(): Omit<IOrderInfo, 'total' | 'items'>; // Получить данные заказа
 	getErrors(): errorsForm; // Получить ошибки формы
-}
-
-export interface FormErrors {
-	address?: string;
-	payment?: string;
-	email?: string;
-	phone?: string;
 }

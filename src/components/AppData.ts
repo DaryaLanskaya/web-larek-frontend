@@ -3,12 +3,12 @@ import { Model } from './base/Model';
 import { IEvents } from './base/Events';
 
 export class Product extends Model<IProduct> {
-	id: string;
-	description: string;
-	image: string;
-	title: string;
-	category: string;
-	price: number | null;
+	id: string; // Идентификатор товара
+	description: string; // Описание товара
+	image: string; // Изображение товара
+	title: string; // Заголовок товара
+	category: string; // Категория товара
+	price: number | null; // Стоимость товара
 }
 
 export class AppState extends Model<IAppState> {

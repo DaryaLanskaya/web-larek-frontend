@@ -2,16 +2,16 @@ import { IEvents } from '../base/Events';
 import { IModalWork } from '../../types';
 
 export class Modal implements IModalWork {
-	protected сontainerModal: HTMLElement; // контейнер модального окна
-	protected buttonClose: HTMLButtonElement; // кнопка закрытия
-	protected _content: HTMLElement; // контент модального окна
-	protected _wapperPage: HTMLElement; // wrapper страницы
+	protected сontainerModal: HTMLElement; // Контейнер модального окна
+	protected buttonClose: HTMLButtonElement; // Кнопка закрытия
+	protected _content: HTMLElement; // Контент модального окна
+	protected _wapperPage: HTMLElement; // Wrapper страницы
 
 	constructor(сontainerModal: HTMLElement, protected events: IEvents) {
-		this.сontainerModal = сontainerModal;
-		this.buttonClose = сontainerModal.querySelector('.modal__close');
-		this._content = сontainerModal.querySelector('.modal__content');
-		this._wapperPage = document.querySelector('.page__wrapper');
+		this.сontainerModal = сontainerModal; // Контейнер модального окна
+		this.buttonClose = сontainerModal.querySelector('.modal__close'); // Кнопка закрытия
+		this._content = сontainerModal.querySelector('.modal__content'); // Контент модального окна
+		this._wapperPage = document.querySelector('.page__wrapper'); // Wrapper страницы
 		this.buttonClose.addEventListener('click', this.close.bind(this));
 		this.сontainerModal.addEventListener('click', this.close.bind(this));
 		this.сontainerModal
@@ -24,16 +24,17 @@ export class Modal implements IModalWork {
 	}
 
 	open() {
-		this.сontainerModal.classList.add('modal_active'); // открытие модального окна
+		this.сontainerModal.classList.add('modal_active'); // Открытие модального окна
 		this.events.emit('modal:open');
 	}
 
 	close() {
-		this.сontainerModal.classList.remove('modal_active'); // закрытие модального окна
+		this.сontainerModal.classList.remove('modal_active'); // Закрытие модального окна
 		this.content = null;
 		this.events.emit('modal:close');
 	}
 
+	// Меняет класс обертки на значение, соответствующее переданному
 	set locked(value: boolean) {
 		if (value) {
 			this._wapperPage.classList.add('page__wrapper_locked');
@@ -42,8 +43,8 @@ export class Modal implements IModalWork {
 		}
 	}
 
+	// Рендер модального окна
 	render(): HTMLElement {
-		// рендер модального окна
 		this._content;
 		this.open();
 		return this.сontainerModal;

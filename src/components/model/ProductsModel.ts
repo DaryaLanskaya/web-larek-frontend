@@ -2,7 +2,7 @@ import { IProduct, IProductModel } from '../../types';
 import { IEvents } from '../base/Events';
 
 export class ProductModel implements IProductModel {
-	protected _products: IProduct[];
+	protected _products: IProduct[]; // Свойство для хранения списка товаров
 	selected: IProduct;
 
 	constructor(protected events: IEvents) {
@@ -10,13 +10,12 @@ export class ProductModel implements IProductModel {
 	}
 
 	set products(data: IProduct[]) {
-		console.log(data);
 		this._products = data;
 		this.events.emit('cards:get');
 	}
 
 	get products() {
-		return this._products;
+		return this._products; // Возвращаем товары
 	}
 
 	setDetail(item: IProduct) {

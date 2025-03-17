@@ -3,78 +3,77 @@ import { createElement } from '../../utils/utils';
 import { IEvents } from '../base/Events';
 
 export class BasketContent implements IBasket {
-	private basketElement: HTMLElement; // Элемент корзины
+	private basketElement: HTMLElement; // Шаблон корзины
 	private titleElement: HTMLElement; // Заголовок корзины
-	private itemListElement: HTMLElement; // Список товаров
-	private actionButton: HTMLButtonElement; // Кнопка для перехода к оформлению заказа
-	private totalPriceElement: HTMLElement; // Элемент для отображения общей стоимости
-	private headerButton: HTMLButtonElement; // Кнопка корзины в хедере
-	private headerCounter: HTMLElement; // Счётчик товаров в хедере
+	private itemListElement: HTMLElement; // Список товаров в корзине
+	private actionButton: HTMLButtonElement; // Кнопка - для перехода к оформлению заказа
+	private totalPriceElement: HTMLElement; // Общая стоимость заказа
+	private headerButton: HTMLButtonElement; // Кнопка корзины в header
+	private headerCounter: HTMLElement; // Счётчик товаров в header
 
-	// Конструктор, который принимает шаблон и события
 	constructor(private template: HTMLTemplateElement, private events: IEvents) {
 		const basketClone = template.content.firstElementChild?.cloneNode(
 			true
 		) as HTMLElement;
 		this.basketElement = basketClone; // Клонируем шаблон корзины
 		this.titleElement = this.basketElement.querySelector('.modal__title'); // Заголовок корзины
-		this.itemListElement = this.basketElement.querySelector('.basket__list'); // Список товаров
+		this.itemListElement = this.basketElement.querySelector('.basket__list'); // Список товаров в корзине
 		this.actionButton = this.basketElement.querySelector(
 			'.basket__button'
-		)! as HTMLButtonElement; // Кнопка оформления заказа
-		this.totalPriceElement = this.basketElement.querySelector('.basket__price'); // Элемент для общей стоимости
+		)! as HTMLButtonElement; // Кнопка - для перехода к оформлению заказа
+		this.totalPriceElement = this.basketElement.querySelector('.basket__price'); // Общая стоимость заказа
 		this.headerButton = document.querySelector(
 			'.header__basket'
-		)! as HTMLButtonElement; // Кнопка корзины в хедере
-		this.headerCounter = document.querySelector('.header__basket-counter'); // Счётчик товаров в хедере
+		)! as HTMLButtonElement; // Кнопка корзины в header
+		this.headerCounter = document.querySelector('.header__basket-counter'); // Счётчик товаров в header
 		this.setupEventListeners(); // Привязываем события
-		this.clearBasket(); // Очищаем корзину при инициализации
+		this.clearBasket(); // Очистка корзины
 	}
 
 	// Настройка обработчиков событий
 	private setupEventListeners(): void {
 		this.actionButton.addEventListener('click', () =>
 			this.events.emit('order:open')
-		); // Открытие формы оформления заказа
+		); // Открываем форму оформления заказа
 		this.headerButton.addEventListener('click', () =>
 			this.events.emit('basket:open')
-		); // Открытие корзины
+		); // Открываем корзину
 	}
 
-	// Обновляем список товаров в корзине
+	// Обновление списка товаров в корзине
 	public updateItems(items: HTMLElement[]): void {
 		if (items.length === 0) {
-			// Если корзина пуста
-			this.actionButton.setAttribute('disabled', 'true'); // Делаем кнопку недоступной
+			// Если корзина не заполнена
+			this.actionButton.setAttribute('disabled', 'true'); // Делаем кнопку неактивной(disabled)
 			this.itemListElement.replaceChildren(
 				createElement('p', {
-					textContent: 'Корзина пуста',
+					textContent: 'Корзина не заполнена',
 					className: 'basket__empty',
-				}) // Сообщение о пустой корзине
+				})
 			);
 		} else {
-			// Если корзина не пуста
-			this.actionButton.removeAttribute('disabled'); // Делаем кнопку доступной
-			this.itemListElement.replaceChildren(...items); // Обновляем список товаров
+			// Если корзина заполнена
+			this.actionButton.removeAttribute('disabled'); // Делаем кнопку активной
+			this.itemListElement.replaceChildren(...items); // Обновление списка товаров
 		}
 	}
-	// Очищаем корзину
+	// Очистка корзины
 	private clearBasket(): void {
 		this.updateItems([]); // Обновляем товары в корзине (пусто)
 		this.totalPrice(0); // Устанавливаем общую цену в 0
 	}
 
-	// Отображаем количество товаров в корзине (в хедере)
+	// Отображение количества товаров в корзине (в header)
 	public counter(count: number): void {
-		this.headerCounter.textContent = `${count}`; // Обновляем счётчик в хедере
+		this.headerCounter.textContent = `${count}`; // Обновляем счётчик в header
 	}
 
-	// Отображаем общую стоимость товаров в корзине
+	// Отображение общей стоимости товаров в корзине
 	public totalPrice(total: number): void {
 		this.totalPriceElement.textContent = `${total} синапсов`; // Устанавливаем стоимость
 	}
 
-	// Рендерим корзину
+	// Рендер корзины
 	public render(): HTMLElement {
 		this.titleElement.textContent = 'Корзина'; // Устанавливаем заголовок
 		return this.basketElement; // Возвращаем элемент корзины

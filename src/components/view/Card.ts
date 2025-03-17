@@ -2,48 +2,52 @@ import { ICard, IProduct, IActions } from '../../types';
 import { IEvents } from '../base/Events';
 
 export class Card implements ICard {
-	protected _element: HTMLElement; // шаблон карточки
-	protected _title: HTMLElement; // шаблон заголовка
-	protected _price: HTMLElement; // шаблон цены
-	protected _image?: HTMLImageElement; // шаблон картинки
-	protected _category?: HTMLElement; // шаблон категории
+	protected _element: HTMLElement; // Шаблон карточки
+	protected _title: HTMLElement; // Шаблон заголовка
+	protected _price: HTMLElement; // Шаблон стоимости
+	protected _image?: HTMLImageElement; // Шаблон изображения
+	protected _category?: HTMLElement; // Шаблон категории
 	protected _colors = <Record<string, string>>{
+		// Шаблон категорий
 		дополнительное: 'additional',
 		'софт-скил': 'soft',
 		кнопка: 'button',
 		'хард-скил': 'hard',
 		другое: 'other',
 	};
+
 	constructor(
-		template: HTMLTemplateElement,
-		protected events: IEvents,
-		actions?: IActions
+		template: HTMLTemplateElement, // Шаблон элемента
+		protected events: IEvents, // Шаблон события
+		actions?: IActions // Шаблон действия
 	) {
 		this._element = template.content
 			.querySelector('.card')
-			.cloneNode(true) as HTMLElement;
-		this._title = this._element.querySelector('.card__title');
-		this._price = this._element.querySelector('.card__price');
+			.cloneNode(true) as HTMLElement; // Копируем шаблон карточки
+		this._title = this._element.querySelector('.card__title'); // Заголовок
+		this._price = this._element.querySelector('.card__price'); // Стоимость
 		this._image = this._element.querySelector(
+			// Изображение
 			'.card__image'
 		) as HTMLImageElement;
-		this._category = this._element.querySelector('.card__category');
+		this._category = this._element.querySelector('.card__category'); // Категория
 
 		if (actions?.onClick) {
 			this.addEventListener(this._element, 'click', actions.onClick);
 		}
 	}
 
+	// Слушатель событий
 	private addEventListener(
 		element: HTMLElement,
 		event: string,
 		handler: EventListener
 	): void {
-		element.addEventListener(event, handler); // Навешиваем обработчик событий на элемент(клик)
+		element.addEventListener(event, handler); // Навешиваем обработчик событий на элемент(при клике)
 	}
 
 	protected setPrice(value: number | null): string {
-		// Запрос set на цену
+		// Запрос set на стоимость
 		return value ? `${value} синапсов` : 'Без цены';
 	}
 
@@ -53,12 +57,12 @@ export class Card implements ICard {
 	}
 
 	protected setImage(src: string, alt: string): void {
-		// Запрос set на картинку
-		this._image.src = src;
-		this._image.alt = alt;
+		// Запрос set на изображение
+		this._image.src = src; // src изображения
+		this._image.alt = alt; // alt изображения
 	}
 
-	// // Метод для установки категории товара
+	// Метод для установки категории товара
 	private setCategory(category: string): void {
 		this._category.textContent = category; // Устанавливаем текст категории
 		this._category.className = `card__category card__category_${
@@ -66,12 +70,12 @@ export class Card implements ICard {
 		}`; // Устанавливаем класс в зависимости от категории
 	}
 
+	// Рендер готового элемента
 	render(data: IProduct): HTMLElement {
-		this.setCategory(data.category);
-
-		this.setTitle(this._title, data.title);
-		this.setImage(data.image, data.title);
-		this._price.textContent = this.setPrice(data.price);
+		this.setTitle(this._title, data.title); // Заголовок
+		this._price.textContent = this.setPrice(data.price); // Стоимость
+		this.setImage(data.image, data.title); // Изображение
+		this.setCategory(data.category); // Категория
 		return this._element;
 	}
 }
