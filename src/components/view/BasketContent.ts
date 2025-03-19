@@ -8,8 +8,6 @@ export class BasketContent implements IBasket {
 	private itemListElement: HTMLElement; // Список товаров в корзине
 	private actionButton: HTMLButtonElement; // Кнопка - для перехода к оформлению заказа
 	private totalPriceElement: HTMLElement; // Общая стоимость заказа
-	private headerButton: HTMLButtonElement; // Кнопка корзины в header
-	private headerCounter: HTMLElement; // Счётчик товаров в header
 
 	constructor(private template: HTMLTemplateElement, private events: IEvents) {
 		const basketClone = template.content.firstElementChild?.cloneNode(
@@ -22,10 +20,6 @@ export class BasketContent implements IBasket {
 			'.basket__button'
 		)! as HTMLButtonElement; // Кнопка - для перехода к оформлению заказа
 		this.totalPriceElement = this.basketElement.querySelector('.basket__price'); // Общая стоимость заказа
-		this.headerButton = document.querySelector(
-			'.header__basket'
-		)! as HTMLButtonElement; // Кнопка корзины в header
-		this.headerCounter = document.querySelector('.header__basket-counter'); // Счётчик товаров в header
 		this.setupEventListeners(); // Привязываем события
 		this.clearBasket(); // Очистка корзины
 	}
@@ -35,9 +29,6 @@ export class BasketContent implements IBasket {
 		this.actionButton.addEventListener('click', () =>
 			this.events.emit('order:open')
 		); // Открываем форму оформления заказа
-		this.headerButton.addEventListener('click', () =>
-			this.events.emit('basket:open')
-		); // Открываем корзину
 	}
 
 	// Обновление списка товаров в корзине
@@ -61,11 +52,6 @@ export class BasketContent implements IBasket {
 	private clearBasket(): void {
 		this.updateItems([]); // Обновляем товары в корзине (пусто)
 		this.totalPrice(0); // Устанавливаем общую цену в 0
-	}
-
-	// Отображение количества товаров в корзине (в header)
-	public counter(count: number): void {
-		this.headerCounter.textContent = `${count}`; // Обновляем счётчик в header
 	}
 
 	// Отображение общей стоимости товаров в корзине

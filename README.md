@@ -99,7 +99,7 @@ interface IProduct {
 ### interface IProducts
 
 ```
-export interface IProducts {
+interface IProducts {
 	total: number | null;
 	items: IProduct[];
 }
@@ -110,7 +110,7 @@ export interface IProducts {
 ### interface ICard
 
 ```
-export interface ICard {
+interface ICard {
 	render(data: IProduct): HTMLElement;
 }
 ```
@@ -124,7 +124,7 @@ export interface ICard {
 ### interface IErrorMessage
 
 ```
-export interface IErrorMessage {
+interface IErrorMessage {
 	error: string;
 }
 ```
@@ -134,7 +134,7 @@ export interface IErrorMessage {
 ### interface IBasketModel
 
 ```
-export interface IBasketModel {
+interface IBasketModel {
 	basketProducts: IProduct[];
 	setSelectedCard(item: IProduct): void;
 	deleteCardToBasket(item: IProduct): void;
@@ -159,7 +159,7 @@ export interface IBasketModel {
 ### interface IBasket
 
 ```
-export interface IBasket {
+interface IBasket {
 	counter(count: number): void;
 	totalPrice(total: number): void;
 	updateItems(items: HTMLElement[]): void;
@@ -172,7 +172,7 @@ export interface IBasket {
 ### interface IEventEmitter
 
 ```
-export interface IEventEmitter {
+interface IEventEmitter {
 	emit: (event: string, data?: unknown) => void;
 }
 ```
@@ -186,7 +186,7 @@ export interface IEventEmitter {
 ### interface IEventData
 
 ```
-export interface IEventData {
+interface IEventData {
 	element: HTMLElement;
 	data?: Partial<IProduct>;
 }
@@ -198,7 +198,7 @@ export interface IEventData {
 ### interface ISuccess
 
 ```
-export interface ISuccess {
+interface ISuccess {
 	render(total: number): HTMLElement;
 }
 ```
@@ -208,7 +208,7 @@ export interface ISuccess {
 ### interface IOrderContent
 
 ```
-export interface IOrderContent {
+interface IOrderContent {
 	valid: boolean;
 	template: HTMLTemplateElement;
 	render(): HTMLElement;
@@ -220,7 +220,7 @@ export interface IOrderContent {
 ### interface IOrderModel
 
 ```
-export interface IOrderModel {
+interface IOrderModel {
 	formElement: HTMLFormElement;
 	paymentButtons: HTMLButtonElement[];
 	submitButton: HTMLButtonElement;
@@ -241,7 +241,7 @@ export interface IOrderModel {
 ### interface IOrderInfo
 
 ```
-export interface IOrderInfo {
+interface IOrderInfo {
 	payment: string;
 	email: string;
 	phone: string;
@@ -256,7 +256,7 @@ export interface IOrderInfo {
 ### interface IModalWork
 
 ```
-export interface IModalWork {
+interface IModalWork {
 	open(): void;
 	close(): void;
 	render(): HTMLElement;
@@ -271,7 +271,7 @@ export interface IModalWork {
 ### interface IActions
 
 ```
-export interface IActions {
+interface IActions {
 	onClick: (event: MouseEvent) => void;
 }
 
@@ -282,7 +282,7 @@ export interface IActions {
 ### interface IProductContent
 
 ```
-export interface IProductContent {
+interface IProductContent {
 	template: HTMLTemplateElement;
 	render(product: IProduct): HTMLElement;
 }
@@ -297,7 +297,7 @@ export interface IProductContent {
 ### interface ICardDetail
 
 ```
-export interface ICardDetail {
+interface ICardDetail {
 	text: HTMLElement;
 	button: HTMLButtonElement;
 	render(data: IProduct): HTMLElement;
@@ -313,7 +313,7 @@ export interface ICardDetail {
 ### interface IBasketItem
 
 ```
-export interface IBasketItem {
+interface IBasketItem {
 	render(data: IProduct, index: number): HTMLElement;
 }
 ```
@@ -322,6 +322,19 @@ export interface IBasketItem {
 Используется метод для взаимодействия с данными:
 
 - Метод для рендеринга элемента корзины.
+
+### interface IPage
+
+```
+interface IPage {
+	counter: number;
+	catalog: HTMLElement[];
+	locked: boolean;
+}
+```
+
+Интерфейс отображения страницы.  
+Отвечает за вывод: cчетчика корзины, элементов каталога(вывод карточек) и за состояние - отвечающее за блокировку прокрутки страницы.
 
 ---
 
@@ -403,6 +416,18 @@ export interface IBasketItem {
 ## Слой представления (View)
 
 Каждый класс представления обеспечивает отображение переданных данных внутри заданного контейнера (DOM-элемента).
+
+#### Класс Page
+
+Реализует саму страницу.
+Конструктор класса принимает HTMLTemplateElement и экземпляр брокера событий.
+
+В качестве полей класса используются следующие данные:
+
+- `_counter` - счетчик.
+- `_catalog` - каталог.
+- `_wrapper` - обертка страницы.
+- `_basket` - корзина.
 
 #### Класс Card
 

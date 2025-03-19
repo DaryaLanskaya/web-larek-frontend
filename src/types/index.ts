@@ -32,7 +32,6 @@ export interface IBasketModel {
 
 // Интерфейс для представления корзины
 export interface IBasket {
-	counter(count: number): void; // Рендерит количество товаров в корзине
 	totalPrice(total: number): void; // Рендерит общую стоимость товаров
 	updateItems(items: HTMLElement[]): void; // Обновляет список товаров в корзине
 	render(): HTMLElement; // Рендерит корзину
@@ -155,4 +154,11 @@ export interface IFormModel {
 	validateContacts(): boolean; // Проверить правильность контактных данных
 	getOrder(): Omit<IOrderInfo, 'total' | 'items'>; // Получить данные заказа
 	getErrors(): errorsForm; // Получить ошибки формы
+}
+
+// Интерфейс отображения страницы
+export interface IPage {
+	setCounter(value: number): void; // Счетчик корзины
+	setCatalog(items: HTMLElement[]): void; // Элемент каталога(вывод карточек)
+	setLocked(value: boolean): void; // Состояние - отвечающее за блокировку прокрутки страницы
 }

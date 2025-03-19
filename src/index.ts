@@ -1,3 +1,4 @@
+import { Page } from './components/View/Page';
 import { Success } from './components/View/Success';
 import './scss/styles.scss';
 import { EventEmitter, IEvents } from './components/base/Events';
@@ -16,32 +17,22 @@ import { ProductModel } from './components/Model/ProductsModel';
 import { FormModel } from './components/Model/FormModel';
 import { ContactsForm } from './components/View/ContactsForm';
 
-const cardCatalogTemplate = document.querySelector(
-	'#card-catalog'
-) as HTMLTemplateElement;
+const cardCatalogTemplate = ensureElement<HTMLTemplateElement>('#card-catalog');
+const basketTemplate = ensureElement<HTMLTemplateElement>('#basket');
+const cardBasketTemplate = ensureElement<HTMLTemplateElement>('#card-basket');
 
-const basketTemplate = document.querySelector('#basket') as HTMLTemplateElement;
-const cardBasketTemplate = document.querySelector(
-	'#card-basket'
-) as HTMLTemplateElement;
+const cardDetailTemplate = ensureElement<HTMLTemplateElement>('#card-preview');
 
-const cardDetailTemplate = document.querySelector(
-	'#card-preview'
-) as HTMLTemplateElement;
+const orderTemplate = ensureElement<HTMLTemplateElement>('#order');
 
-const orderTemplate = document.querySelector('#order') as HTMLTemplateElement;
+const contactsTemplate = ensureElement<HTMLTemplateElement>('#contacts');
 
-const contactsTemplate = document.querySelector(
-	'#contacts'
-) as HTMLTemplateElement;
-
-const successTemplate = document.querySelector(
-	'#success'
-) as HTMLTemplateElement;
+const successTemplate = ensureElement<HTMLTemplateElement>('#success');
 
 const events = new EventEmitter();
 const api = new LarekAPI(CDN_URL, API_URL);
 const productModel = new ProductModel(events);
+const page = new Page(document.body, events);
 const modal = new Modal(ensureElement<HTMLElement>('#modal-container'), events);
 const basket = new BasketContent(basketTemplate, events);
 const order = new OrderForm(orderTemplate, events);
@@ -68,12 +59,16 @@ api
 	});
 
 events.on('cards:get', () => {
+	const cards: HTMLElement[] = [];
 	productModel.products.forEach((item) => {
 		const card = new Card(cardCatalogTemplate, events, {
 			onClick: () => events.emit('card:select', item),
 		});
-		ensureElement<HTMLElement>('.gallery').append(card.render(item));
+		cards.push(card.render(item));
+
+		// ensureElement<HTMLElement>('.gallery').append(card.render(item));
 	});
+	page.setCatalog(cards);
 });
 
 events.on('card:select', (item: IProduct) => {
@@ -88,11 +83,11 @@ events.on('modalCard:open', (item: IProduct) => {
 });
 
 events.on('modal:open', () => {
-	modal.locked = true;
+	page.setLocked(true);
 });
 
 events.on('modal:close', () => {
-	modal.locked = false;
+	page.setLocked(false);
 });
 
 // Корзина
@@ -109,7 +104,7 @@ events.on('basket:change', () => {
 
 events.on('card:addToCart', () => {
 	basketModel.setSelectedCard(productModel.selected);
-	basket.counter(basketModel.getCounter());
+	page.setCounter(basketModel.getCounter());
 	events.emit('basket:change');
 	modal.close();
 });
@@ -121,7 +116,7 @@ events.on('basket:open', () => {
 
 events.on('basket:basketItemRemove', (item: IProduct) => {
 	basketModel.deleteCardToBasket(item);
-	basket.counter(basketModel.getCounter());
+	page.setCounter(basketModel.getCounter());
 	events.emit('basket:change');
 });
 
@@ -200,7 +195,7 @@ events.on('success:open', () => {
 			modal.render();
 
 			basketModel.clearBasketProducts();
-			basket.counter(basketModel.getCounter());
+			page.setCounter(basketModel.getCounter());
 			events.emit('basket:change'); // Обновляем корзину после успешного заказа
 			events.emit('modal:open');
 		})

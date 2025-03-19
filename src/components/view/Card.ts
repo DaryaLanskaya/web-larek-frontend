@@ -7,6 +7,7 @@ export class Card implements ICard {
 	protected _price: HTMLElement; // Шаблон стоимости
 	protected _image?: HTMLImageElement; // Шаблон изображения
 	protected _category?: HTMLElement; // Шаблон категории
+	protected _text?: HTMLElement; // Шаблон текста
 	protected _colors = <Record<string, string>>{
 		// Шаблон категорий
 		дополнительное: 'additional',
@@ -26,6 +27,7 @@ export class Card implements ICard {
 			.cloneNode(true) as HTMLElement; // Копируем шаблон карточки
 		this._title = this._element.querySelector('.card__title'); // Заголовок
 		this._price = this._element.querySelector('.card__price'); // Стоимость
+		this._text = this._element.querySelector('.card__text'); // Текст
 		this._image = this._element.querySelector(
 			// Изображение
 			'.card__image'
@@ -56,6 +58,11 @@ export class Card implements ICard {
 		return element ? (element.textContent = String(value)) : '';
 	}
 
+	protected setText(element: HTMLElement, value: unknown): string {
+		// Запрос set на заголовок
+		return element ? (element.textContent = String(value)) : '';
+	}
+
 	protected setImage(src: string, alt: string): void {
 		// Запрос set на изображение
 		this._image.src = src; // src изображения
@@ -73,6 +80,7 @@ export class Card implements ICard {
 	// Рендер готового элемента
 	render(data: IProduct): HTMLElement {
 		this.setTitle(this._title, data.title); // Заголовок
+		this.setText(this._text, data.description); // Заголовок
 		this._price.textContent = this.setPrice(data.price); // Стоимость
 		this.setImage(data.image, data.title); // Изображение
 		this.setCategory(data.category); // Категория

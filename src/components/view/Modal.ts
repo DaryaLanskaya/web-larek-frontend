@@ -5,13 +5,10 @@ export class Modal implements IModalWork {
 	protected сontainerModal: HTMLElement; // Контейнер модального окна
 	protected buttonClose: HTMLButtonElement; // Кнопка закрытия
 	protected _content: HTMLElement; // Контент модального окна
-	protected _wapperPage: HTMLElement; // Wrapper страницы
-
 	constructor(сontainerModal: HTMLElement, protected events: IEvents) {
 		this.сontainerModal = сontainerModal; // Контейнер модального окна
 		this.buttonClose = сontainerModal.querySelector('.modal__close'); // Кнопка закрытия
-		this._content = сontainerModal.querySelector('.modal__content'); // Контент модального окна
-		this._wapperPage = document.querySelector('.page__wrapper'); // Wrapper страницы
+		this._content = сontainerModal.querySelector('.modal__content'); // Контент модального окна// Wrapper страницы
 		this.buttonClose.addEventListener('click', this.close.bind(this));
 		this.сontainerModal.addEventListener('click', this.close.bind(this));
 		this.сontainerModal
@@ -32,15 +29,6 @@ export class Modal implements IModalWork {
 		this.сontainerModal.classList.remove('modal_active'); // Закрытие модального окна
 		this.content = null;
 		this.events.emit('modal:close');
-	}
-
-	// Меняет класс обертки на значение, соответствующее переданному
-	set locked(value: boolean) {
-		if (value) {
-			this._wapperPage.classList.add('page__wrapper_locked');
-		} else {
-			this._wapperPage.classList.remove('page__wrapper_locked');
-		}
 	}
 
 	// Рендер модального окна
