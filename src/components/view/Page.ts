@@ -24,6 +24,7 @@ export class Page implements IPage {
 		this._counter.textContent = String(value); // Обновляем счётчик в header
 	}
 
+	// Отвечает за вывод каталога товаров на страницу
 	public setCatalog(items: HTMLElement[]) {
 		this._catalog.replaceChildren(...items);
 	}

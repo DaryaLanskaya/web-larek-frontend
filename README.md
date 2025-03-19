@@ -327,9 +327,9 @@ interface IBasketItem {
 
 ```
 interface IPage {
-	counter: number;
-	catalog: HTMLElement[];
-	locked: boolean;
+    setCounter(value: number): void;
+    setCatalog(items: HTMLElement[]): void;
+    setLocked(value: boolean): void;
 }
 ```
 
@@ -428,6 +428,13 @@ interface IPage {
 - `_catalog` - каталог.
 - `_wrapper` - обертка страницы.
 - `_basket` - корзина.
+
+Методы и события для взаимодействия с данными:
+
+- `setCounter(value: number)` - устанавливает отображение количества товаров в корзине(в header).
+- `setCatalog(items: HTMLElement[])` - отвечает за вывод каталога товаров на страницу.
+- `setLocked(value: boolean)` - меняет класс обертки на значение, соответствующее переданному.
+- `basket:open` - открытие корзины по клику на элемент.
 
 #### Класс Card
 
